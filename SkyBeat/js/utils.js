@@ -1,49 +1,71 @@
-// js/utils.js
-// Utilidades compartidas para formateo y validación.
+/**
+ * utils.js
+ * -------------------------------------------------------------
+ * Funciones auxiliares puras utilizadas por varios módulos:
+ * formateo de tiempos, limpieza de nombres, sanitización y
+ * pequeñas utilidades de detección.
+ *
+ * Expone todo a través del objeto global SkyBeat.utils.
+ * -------------------------------------------------------------
+ */
+(function (root) {
+  'use strict';
 
-export const AUDIO_EXTENSIONS = ['mp3', 'm4a', 'aac', 'wav', 'ogg', 'oga', 'flac', 'webm'];
-export const AUDIO_MIME_PREFIX = 'audio/';
+  const utils = {
+    ICON_PLAY: '<path d="M8 5v14l11-7z"></path>',
+    ICON_PAUSE: '<path d="M7 5h3v14H7V5zm7 0h3v14h-3V5z"></path>',
 
-export function formatTime(seconds) {
-  if (!Number.isFinite(seconds) || seconds < 0) return '0:00';
-  const whole = Math.floor(seconds);
-  const minutes = Math.floor(whole / 60);
-  const secs = String(whole % 60).padStart(2, '0');
-  return `${minutes}:${secs}`;
-}
+    /**
+     * Convierte un número de segundos a una cadena legible m:ss.
+     * @param {number} seconds
+     * @returns {string}
+     */
+    formatTime(seconds) {
+      if (!Number.isFinite(seconds) || seconds < 0) {
+        return '0:00';
+      }
+      const whole = Math.floor(seconds);
+      const minutes = Math.floor(whole / 60);
+      const secs = String(whole % 60).padStart(2, '0');
+      return `${minutes}:${secs}`;
+    },
 
-export function cleanName(fileName) {
-  return String(fileName).replace(/\.[^.]+$/, '');
-}
+    /**
+     * Quita la extensión de un nombre de archivo para mostrarlo limpio.
+     * @param {string} fileName
+     * @returns {string}
+     */
+    cleanName(fileName) {
+      return String(fileName || '').replace(/\.[^.]+$/, '');
+    },
 
-export function getExtension(fileName) {
-  const match = String(fileName).match(/\.([^.]+)$/);
-  return match ? match[1].toLowerCase() : '';
-}
+    /**
+     * Detecta si un archivo es de audio por su tipo MIME o por su extensión.
+     * Útil para filtrar arrastres o archivos en carpetas.
+     * @param {{name: string, type?: string}} file
+     * @returns {boolean}
+     */
+    isAudioFile(file) {
+      const byType = file.type && file.type.startsWith('audio/');
+      const byExtension = /\.(mp3|m4a|aac|wav|ogg|oga|flac|webm)$/i.test(file.name || '');
+      return byType || byExtension;
+    },
 
-export function isAudioFile(file) {
-  const byType = file.type && file.type.startsWith(AUDIO_MIME_PREFIX);
+    /**
+     * Escapa HTML básico para evitar inyección al construir textos.
+     * @param {string} value
+     * @returns {string}
+     */
+    escapeHtml(value) {
+      return String(value)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+  };
 
-  if (byType) return true;
-
-  const ext = getExtension(file.name);
-  return AUDIO_EXTENSIONS.includes(ext);
-}
-
-export function supportsDirectoryPicker() {
-  return typeof window !== 'undefined' && 'showDirectoryPicker' in window;
-}
-
-export function dispatchAppEvent(name, detail = {}) {
-  window.dispatchEvent(new CustomEvent(`skybeat:${name}`, { detail }));
-}
-
-export function listenAppEvent(name, handler) {
-  const wrapper = (event) => handler(event.detail);
-  window.addEventListener(`skybeat:${name}`, wrapper);
-  return () => window.removeEventListener(`skybeat:${name}`, wrapper);
-}
-
-export function clamp(value, min, max) {
-  return Math.min(Math.max(value, min), max);
-}
+  root.SkyBeat = root.SkyBeat || {};
+  root.SkyBeat.utils = utils;
+})(window);

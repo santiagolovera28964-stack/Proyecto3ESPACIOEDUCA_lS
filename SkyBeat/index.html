@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SkyBeat | Reproductor modular local</title>
-  <link rel="stylesheet" href="css/styles.css">
+  <title>SkyBeat | Reproductor musical local</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <div class="page-shell">
@@ -31,10 +31,12 @@
       <section class="hero" data-animate>
         <div class="hero-grid">
           <div>
-            <div class="eyebrow"><span></span>Interfaz suave, clara y pensada para tu música</div>
+            <div class="eyebrow"><span></span>Interfaz suave, clara y pensada para tu música descargada</div>
             <h1>Escucha tus archivos con un estilo limpio, moderno y lleno de cielo.</h1>
             <p>
-              SkyBeat Modular explora la carpeta <strong>musicas/</strong> y carga todas las canciones compatibles para que puedas reproducirlas con una experiencia fluida, ordenada y visualmente coherente.
+              SkyBeat te permite cargar tus canciones desde tu dispositivo y reproducirlas
+              con una barra elegante siempre a tu alcance. Usa las teclas ← y → para avanzar
+              o retroceder 10 segundos, o simplemente arrastra la barra de progreso.
             </p>
             <div class="hero-actions">
               <a class="btn btn-primary" href="#reproductor">Ir al reproductor</a>
@@ -59,12 +61,12 @@
         <div class="section-head">
           <div>
             <h2>Quienes somos</h2>
-            <p class="lead">Un espacio modular diseñado para que reproduzcas tu música local con una experiencia elegante, ligera y muy fácil de usar.</p>
+            <p class="lead">Un espacio web diseñado para que reproduzcas tu música local con una experiencia elegante, ligera y muy fácil de usar.</p>
           </div>
         </div>
         <div class="about-grid">
           <div class="copy-block">
-            <strong>SkyBeat Modular</strong> está construido con archivos independientes de interfaz, lógica de audio y gestión de lista. Esto permite mantener el proyecto ordenado y ampliable sin perder la ligereza de una página estática.
+            <strong>SkyBeat</strong> nace como una interfaz centrada en la comodidad. Aquí no dependes de bibliotecas externas ni de plataformas cerradas: simplemente seleccionas tus archivos de audio y los controlas con una navegación clara.
           </div>
           <div class="copy-block">
             Nuestro objetivo es unir una presentación visual suave con controles precisos, para que escuchar música se sienta tan fluido como mover una lista bien organizada en tu propio dispositivo.
@@ -81,7 +83,7 @@
         </div>
         <div class="mission-grid">
           <div class="copy-block">
-            La misión de esta página es ofrecerte una forma ordenada de escuchar música descargada: apuntar a la carpeta <strong>musicas/</strong>, cargar todas las pistas automáticamente y controlar la reproducción con precisión.
+            La misión de esta página es ofrecerte una forma ordenada de escuchar música descargada: cargar las pistas que quieras, navegar entre ellas, avanzar o retroceder con atajos de teclado y ver el tiempo exacto que falta para terminar cada canción.
           </div>
         </div>
       </section>
@@ -95,14 +97,14 @@
         </div>
         <div class="function-grid">
           <ul class="function-list">
-            <li><span class="function-bullet"></span>Lee automáticamente los archivos de audio dentro de <strong>musicas/</strong> al ejecutarse con un servidor local.</li>
+            <li><span class="function-bullet"></span>Carga múltiples archivos de audio directamente desde tu dispositivo.</li>
             <li><span class="function-bullet"></span>Permite elegir el minuto exacto de reproducción con la barra de progreso.</li>
             <li><span class="function-bullet"></span>Muestra el tiempo transcurrido, el tiempo total y el tiempo restante de cada pista.</li>
           </ul>
           <ul class="function-list">
-            <li><span class="function-bullet"></span>Incluye botones para retroceder, adelantar 10 segundos y saltar entre canciones.</li>
+            <li><span class="function-bullet"></span>Atajos con el teclado: ← retrocede 10s, → adelanta 10s, espacio pausa/reproduce.</li>
             <li><span class="function-bullet"></span>Mantiene un diseño claro, celeste y blanco, con continuidad visual en toda la página.</li>
-            <li><span class="function-bullet"></span>Usa módulos independientes para UI, audio, lista y carga de archivos, facilitando su mantenimiento.</li>
+            <li><span class="function-bullet"></span>Reproductor oculto o visible a tu gusto, siempre accesible cuando lo necesites.</li>
           </ul>
         </div>
       </section>
@@ -111,22 +113,21 @@
         <div class="section-head">
           <div>
             <h2>Reproductor de música</h2>
-            <p class="lead">Activa la carga automática de la carpeta <strong>musicas/</strong>, selecciona una canción y controla la reproducción con precisión total.</p>
+            <p class="lead">Selecciona los archivos de audio que quieras escuchar. Aparecerán en la lista y podrás controlarlos desde la barra inferior.</p>
           </div>
         </div>
 
-        <div class="player-grid">
+        <div class="player-layout">
           <aside class="panel">
             <h3>Tu biblioteca local</h3>
-            <p class="sub">Conecta la carpeta <strong>musicas/</strong> para que todas tus canciones aparezcan automáticamente en la lista.</p>
+            <p class="sub">Selecciona todos los archivos de audio que quieras reproducir. Puedes elegir varios a la vez.</p>
 
-            <div class="button-stack">
-              <button id="loadFolderBtn" class="btn btn-primary" type="button">Cargar carpeta musicas/</button>
-              <label class="btn btn-ghost" for="musicInput">Seleccionar archivos manualmente</label>
-              <input id="musicInput" class="file-input" type="file" accept="audio/*" multiple>
-            </div>
+            <label class="dropzone" for="musicInput" role="button" tabindex="0" aria-label="Seleccionar archivos de audio">
+              <strong>🎵 Haz clic para seleccionar tus canciones</strong>
+              <small>Puedes elegir varios archivos a la vez. Acepta MP3, WAV, OGG, M4A, FLAC y más. Todo se procesa localmente.</small>
+            </label>
 
-            <div id="statusBanner" class="status-banner" hidden></div>
+            <input id="musicInput" class="file-input" type="file" accept="audio/*" multiple>
 
             <div class="playlist-header">
               <strong>Lista de canciones</strong>
@@ -134,64 +135,73 @@
             </div>
 
             <div id="playlistEmpty" class="empty-state">
-              Aún no hay canciones cargadas. Usa el botón para abrir la carpeta <strong>musicas/</strong> o selecciona archivos manualmente.
+              Todavía no hay canciones cargadas. Usa el botón de arriba para seleccionar tus archivos de audio.
             </div>
 
             <div id="playlist" class="playlist" aria-label="Lista de reproducción" hidden></div>
           </aside>
-
-          <div class="panel now-playing">
-            <div class="now-top">
-              <div>
-                <div class="track-badge"><span class="status-dot"></span> Reproducción local</div>
-                <h3 class="track-main-title" id="trackTitle">Sin canción cargada</h3>
-                <p class="track-main-subtitle" id="trackInfo">Carga la carpeta musicas/ para comenzar.</p>
-              </div>
-            </div>
-
-            <div class="progress-wrap">
-              <div class="time-row">
-                <span id="currentTime">0:00</span>
-                <span id="remainingTime">-0:00</span>
-              </div>
-              <input id="progressBar" class="range" type="range" min="0" max="100" value="0" step="0.01" aria-label="Control de progreso">
-              <div class="control-labels">
-                <span>Minuto exacto</span>
-                <span id="totalTime">0:00</span>
-              </div>
-            </div>
-
-            <div class="controls">
-              <div class="control-row">
-                <button id="back10Btn" class="control-btn" type="button" aria-label="Retroceder 10 segundos" disabled>
-                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 6.59V4L6 9l5 5V11.41c2.76 0 5 2.24 5 5 0 1.31-.5 2.5-1.32 3.39l1.42 1.42A6.98 6.98 0 0 0 18 16.41c0-3.87-3.13-7-7-7zm-1 0A7 7 0 0 0 4 13.59h2.02A4.99 4.99 0 0 1 10 8.59V6.59z"/></svg>
-                </button>
-                <button id="prevBtn" class="control-btn" type="button" aria-label="Canción anterior" disabled>
-                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6h2v12H6V6zm3.5 6 10 6V6l-10 6z"/></svg>
-                </button>
-                <button id="playPauseBtn" class="control-btn primary" type="button" aria-label="Reproducir" disabled>
-                  <svg id="playPauseIcon" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
-                </button>
-                <button id="nextBtn" class="control-btn" type="button" aria-label="Siguiente canción" disabled>
-                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 6h2v12h-2V6zM6 18l10-6-10-6v12z"/></svg>
-                </button>
-                <button id="forward10Btn" class="control-btn" type="button" aria-label="Avanzar 10 segundos" disabled>
-                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 6.59V4l5 5-5 5V11.41c-2.76 0-5 2.24-5 5 0 1.31.5 2.5 1.32 3.39L7.9 21.22A6.98 6.98 0 0 1 5 16.41c0-3.87 3.13-7 7-7zm1 0A7 7 0 0 1 20 13.59h-2.02A4.99 4.99 0 0 0 14 8.59V6.59z"/></svg>
-                </button>
-              </div>
-            </div>
-
-            <div class="empty-state" id="playerHint">
-              El reproductor se activará cuando cargues al menos una canción. Puedes usar la carpeta <strong>musicas/</strong> o subir archivos manualmente.
-            </div>
-          </div>
         </div>
       </section>
     </main>
   </div>
 
+  <!-- Botón flotante para mostrar/ocultar el reproductor -->
+  <button id="playerToggle" class="player-toggle" type="button" aria-label="Mostrar reproductor" title="Mostrar / ocultar reproductor">
+    <svg class="toggle-icon toggle-show" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+    <svg class="toggle-icon toggle-hide" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5h3v14H7V5zm7 0h3v14h-3V5z"/></svg>
+    <span class="toggle-label">Reproductor</span>
+    <div class="toggle-glimmer"></div>
+  </button>
+
+  <!-- Barra del reproductor -->
+  <div class="player-bar" id="playerBar" role="region" aria-label="Reproductor de música">
+    <div class="player-bar-inner">
+      <div class="player-bar-info">
+        <div class="track-badge"><span class="status-dot" id="statusDot"></span> <span id="statusLabel">Reproducción local</span></div>
+        <h3 class="track-main-title" id="trackTitle">Sin canción cargada</h3>
+        <p class="track-main-subtitle" id="trackInfo">Selecciona archivos de audio para comenzar.</p>
+      </div>
+
+      <div class="player-bar-controls">
+        <div class="control-row">
+          <button id="prevBtn" class="control-btn" type="button" aria-label="Canción anterior" disabled>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6h2v12H6V6zm3.5 6 10 6V6l-10 6z"/></svg>
+          </button>
+          <button id="back10Btn" class="control-btn" type="button" aria-label="Retroceder 10 segundos" disabled>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 6.59V4L6 9l5 5V11.41c2.76 0 5 2.24 5 5 0 1.31-.5 2.5-1.32 3.39l1.42 1.42A6.98 6.98 0 0 0 18 16.41c0-3.87-3.13-7-7-7zm-1 0A7 7 0 0 0 4 13.59h2.02A4.99 4.99 0 0 1 10 8.59V6.59z"/></svg>
+          </button>
+          <button id="playPauseBtn" class="control-btn primary" type="button" aria-label="Reproducir" disabled>
+            <svg id="playPauseIcon" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+          </button>
+          <button id="forward10Btn" class="control-btn" type="button" aria-label="Avanzar 10 segundos" disabled>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 6.59V4l5 5-5 5V11.41c-2.76 0-5 2.24-5 5 0 1.31.5 2.5 1.32 3.39L7.9 21.22A6.98 6.98 0 0 1 5 16.41c0-3.87 3.13-7 7-7zm1 0A7 7 0 0 1 20 13.59h-2.02A4.99 4.99 0 0 0 14 8.59V6.59z"/></svg>
+          </button>
+          <button id="nextBtn" class="control-btn" type="button" aria-label="Siguiente canción" disabled>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 6h2v12h-2V6zM6 18l10-6-10-6v12z"/></svg>
+          </button>
+        </div>
+
+        <div class="progress-wrap">
+          <div class="time-row">
+            <span id="currentTime">0:00</span>
+            <span id="totalTime">0:00</span>
+          </div>
+          <input id="progressBar" class="range" type="range" min="0" max="100" value="0" step="0.01" aria-label="Control de progreso">
+          <div class="control-labels">
+            <span>Progreso</span>
+            <span id="remainingTime">-0:00</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <audio id="audioPlayer" preload="metadata"></audio>
 
-  <script type="module" src="js/main.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/playlist.js"></script>
+  <script src="js/player.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/app.js"></script>
 </body>
 </html>
